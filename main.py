@@ -16,8 +16,25 @@ def send_telegram_message(message):
     return response.json()
 
 def get_news_summary():
-    # 여기에 뉴스 요약 API나 GPT 요약 로직을 넣을 수 있음
-    return "[세계 정치·경제 뉴스 요약]\n- 경제: 미국 금리 동결 가능성\n- 정치: 미중 무역 회담 다음 주 개최\n- 사건: 중동 분쟁 격화 가능성"
+    openai.api_key = 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
+    response = openai.ChatCompletion.create(
+        model="gpt-4",
+        messages=[
+            {
+                "role": "system",
+                "content": "너는 세계 정치·경제 뉴스를 요약해주는 기자야. 오늘자 주요 이슈만 간결하게 정리해줘. 3~5줄로."
+            },
+            {
+                "role": "user",
+                "content": "오늘 세계 정치 및 경제 뉴스를 요약해줘"
+            }
+        ],
+        temperature=0.5,
+        max_tokens=500
+    )
+
+    summary = response["choices"][0]["message"]["content"]
+    return f"[세계 정치·경제 뉴스 요약]\n{summary}"
 
 def main():
     now = datetime.now()
